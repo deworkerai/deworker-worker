@@ -1,0 +1,45 @@
+{
+  "name": "deworder-subworker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "deworker peer start --key=123",
+    "dev": "tsx watch ./src/index.ts",
+    "debug": "tsx --inspect-brk ./src/index.ts",
+    "build": "rm -rf dist && mkdir dist && tsc -p tsconfig.json",
+    "lint-staged": "lint-staged",
+    "lint": "eslint ./src",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "src/*.{js,ts,md,json}": [
+      "prettier --parser=typescript --write",
+      "pnpm lint"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.4.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.2.0",
+    "@commitlint/config-angular": "^19.1.0",
+    "@commitlint/config-conventional": "^19.1.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.0.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "tsx": "^4.7.1",
+    "typescript-eslint": "^7.7.0"
+  }
+}

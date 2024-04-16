@@ -1,0 +1,34 @@
+type: subworker
+version: 1.0.0
+
+schema:
+  id: subworker-01
+  name:
+    human: Hello Worker
+    model: hello_worker
+  description:
+    human: This is hello worker that say hello
+    model: This worker can ONLY say hello
+  avatar: https://app.questflow.ai/images/logo.png
+  creator: Questflow
+  skills:
+    - name:
+        human: Say hello
+        model: say_hello
+      description:
+        human: It can say hello to everyone
+        model: It can ONLY response hello
+      handler: sayHello
+      requestSchema:
+        type: object
+        properties:
+          name:
+            type: string
+            description: user name
+      responseSchema:
+        type: object
+        properties:
+          result:
+            type: string
+            description: hello message
+  entry: ./dist/index.js
