@@ -1,8 +1,8 @@
-type: subworker
+type: worker
 version: 1.0.0
 
 schema:
-  id: subworker-01
+  id: worker-01
   name:
     human: Hello Worker
     model: hello_worker
@@ -31,4 +31,4 @@ schema:
           result:
             type: string
             description: hello message
-  entry: ./dist/index.js
+  entry: ./src/index.ts

@@ -1,5 +1,5 @@
 {
-  "name": "deworder-subworker",
+  "name": "deworder-worker",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
