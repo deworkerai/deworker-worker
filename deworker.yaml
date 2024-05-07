@@ -10,7 +10,6 @@ schema:
     human: This is hello worker that say hello
     model: This worker can ONLY say hello
   avatar: https://app.questflow.ai/images/logo.png
-  creator: Questflow
   skills:
     - name:
         human: Say hello
