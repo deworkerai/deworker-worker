@@ -2,7 +2,6 @@
 
 First, you need to create a new worker project:
 
-
 ## Prerequisites
 
 - git
@@ -52,7 +51,7 @@ Before you start to build your worker, you need to know the following concepts:
 
 ## What is `peerKey.json`
 
-`peerKey.json` is the key file of your worker. You can find the following fields in `peerKey.json`:
+`peerKey.json` is the key file of your peer and peer is miner for running worker. You can find the following fields in `peerKey.json`:
 
 - `id`: The id(peer key) of your peer.
 - `privKey`: The private key of your peer.
@@ -95,8 +94,8 @@ The interface of request parameters is:
 Let's look at the `sayHello` handler:
 
 ```typescript
-async function sayHello(params: { name: string }): Promise<string> {
-  return { result: `hello world, ${params.name}!` };
+export async function sayHello(args: { params: { name: string }; stream?: boolean }): Promise<string> {
+  return { result: `hello world, ${args.params.name}!` };
 }
 ```
 
@@ -107,16 +106,42 @@ If you want to return a stream, you can set the `stream` field to `true` in the 
 So, you need change your code:
 
 ```typescript
-async function sayHello(args: {
+export const sayHello = (args: {
   params: { name: string };
   stream?: boolean;
-}): Promise<string | Readable> {
+}): Record<string, any> | ReadStream => {
   if (args.stream) {
-    return fs.createReadStream('hello.txt');
+    const fileStream = fs.createReadStream(path.join(__dirname, '../README.md'));
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+    let id = 0;
+
+    const stream = new Readable({
+      read() {},
+    });
+
+    rl.on('line', (line) => {
+      id++;
+      stream.push(`event: message\n`);
+      stream.push(`id: ${id}\n`);
+      stream.push(`data: ${line}\n\n`);
+    });
+
+    rl.on('close', () => {
+      stream.push(null);
+    });
+
+    fileStream.on('error', (err) => {
+      stream.emit('error', err);
+    });
+
+    return stream;
   } else {
     return { result: `hello world, ${args.params.name}!` };
   }
-}
+};
 ```
 
 Now, you can change the code you want and build your worker. After you build your worker, you can learn [how to test your worker](./how-to-test.md).
