@@ -2,6 +2,14 @@
 
 First, you need to create a new worker project:
 
+
+## Prerequisites
+
+- git
+- nodejs >= 19.x
+- pnpm
+- [deworker-cli](https://www.npmjs.com/package/@deworker/deworker-cli)
+
 ```bash
 git clone git@github.com:deworkerai/deworker-worker.git my_first_worker
 cd my_first_worker
@@ -84,3 +92,31 @@ The interface of request parameters is:
 }
 ```
 
+Let's look at the `sayHello` handler:
+
+```typescript
+async function sayHello(params: { name: string }): Promise<string> {
+  return { result: `hello world, ${params.name}!` };
+}
+```
+
+You can see that the `sayHello` handler receives a `name` parameter and returns a string. The `name` parameter should match the request schema that you defined in `deworker.yaml`. The return value should match the response schema that you defined in `deworker.yaml`.
+
+If you want to return a stream, you can set the `stream` field to `true` in the request parameters. The handler should handle and return a stream.
+
+So, you need change your code:
+
+```typescript
+async function sayHello(args: {
+  params: { name: string };
+  stream?: boolean;
+}): Promise<string | Readable> {
+  if (args.stream) {
+    return fs.createReadStream('hello.txt');
+  } else {
+    return { result: `hello world, ${args.params.name}!` };
+  }
+}
+```
+
+Now, you can change the code you want and build your worker. After you build your worker, you can learn [how to test your worker](./how-to-test.md).
