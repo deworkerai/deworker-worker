@@ -1,4 +1,4 @@
-# Deworekr Worker
+# Deworker Worker
 
 This is first worker of Deworker Protocol, and also is a quick start for you to build your own worker.
 
